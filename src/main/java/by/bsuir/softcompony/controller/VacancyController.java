@@ -16,11 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 @Controller
 public class VacancyController {
 
+    private static final String MESSAGE = "Отклик отправлен";
     @Autowired
     private VacancyRepository vacancyRepository;
     @Autowired
@@ -46,7 +49,13 @@ public class VacancyController {
                                @RequestParam String firstName, @RequestParam String email,
                                @RequestParam("file") MultipartFile file, Model model) {
 
+        //Сохранение файла
         String fileName = file.getOriginalFilename();
+        try {
+            file.transferTo(new File("D:\\upload\\" + fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Optional<Vacancy> vacancyTmp = vacancyRepository.findById(vacancyId);
         //Выбранная вакансия
         Vacancy vacancy = vacancyTmp.get();
@@ -57,7 +66,10 @@ public class VacancyController {
         //Изменение этапа
         Stage stage = stageRepository.findByStage("Рассмотрение");
         vacancy.setStage(stage);
+        vacancy.setVacancyResponse(vacancyResponse);
         vacancyRepository.save(vacancy);
-        return "homePage";
+
+        model.addAttribute("message", MESSAGE);
+        return "response";
     }
 }

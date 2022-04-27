@@ -43,7 +43,7 @@ public class OrderController {
         client.setEmail(email);
         String fileName = file.getOriginalFilename();
         try {
-            file.transferTo(new File("D:\\Универ\\Курсовая работа\\softcompony\\upload" + fileName));
+            file.transferTo(new File("D:\\upload\\" + fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }

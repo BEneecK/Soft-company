@@ -12,7 +12,7 @@
     <div th:insert="blocks/header :: header"></div>
 
     <main>
-        <form action="/order" method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data">
             <div class="row g-3">
                 <div class="col-sm-6">
                     <label class="form-label">Фамилия</label>
@@ -44,6 +44,7 @@
                 <p><input type="file" name="file" accept=".doc,.docx,.odt,.txt,.pdf"></p>
             </div>
 
+            <p style="color:red" class="text-center" th:text="${message}"></p>
             <hr class="my-4">
 
             <button class="w-100 btn btn-primary btn-lg" type="submit">Продолжить</button>
