@@ -33,10 +33,6 @@ public class SignInController {
         else {
             model.addAttribute("error", ERROR_MESSAGE);
         }
-
-//        UserRole role = userRoleRepository.findByRole("Пользователь");
-//        User user = new User(firstName, lastName, email, password, 5.0, false, role ,null);
-//        userRepository.save(user);
         return "signIn";
     }
 }
