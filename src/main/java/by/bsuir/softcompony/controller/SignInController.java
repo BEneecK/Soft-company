@@ -40,9 +40,9 @@ public class SignInController {
                     return "redirect:/tester/" + user.getId();
                 }
             }
-        }
-        else {
-            model.addAttribute("error", ERROR_MESSAGE);
+            else {
+                model.addAttribute("error", ERROR_MESSAGE);
+            }
         }
         return "signIn";
     }

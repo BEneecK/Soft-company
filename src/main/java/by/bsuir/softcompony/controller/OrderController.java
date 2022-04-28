@@ -22,7 +22,7 @@ import java.io.IOException;
 public class OrderController {
 
 
-
+    private static final String MESSAGE = "Заявка отправлена";
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
@@ -43,27 +43,15 @@ public class OrderController {
         client.setEmail(email);
         String fileName = file.getOriginalFilename();
         try {
-            file.transferTo(new File("D:\\upload\\" + fileName));
+            file.transferTo(new File("D:\\Универ\\Курсовая работа\\softcompony\\src\\main\\resources\\static\\tasks\\" + fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
         Stage stage = stageRepository.findByStage("Рассмотрение");
         Task task = new Task(description, fileName, null, client, stage, null);
         taskRepository.save(task);
-//        User user = new User();
-//        if(userRepository.existsByEmail(email)) {
-//            user = userRepository.findByEmail(email);
-//            if(user.getEmail().equals(email) && user.getPassword().equals(password)) {
-//                return "redirect:/admin/";
-//            }
-//        }
-//        else {
-//            model.addAttribute("error", ERROR_MESSAGE);
-//        }
 
-//        UserRole role = userRoleRepository.findByRole("Пользователь");
-//        User user = new User(firstName, lastName, email, password, 5.0, false, role ,null);
-//        userRepository.save(user);
+        model.addAttribute("message", MESSAGE);
         return "order";
     }
 }

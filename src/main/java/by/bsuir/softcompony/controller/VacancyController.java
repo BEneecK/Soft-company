@@ -52,7 +52,7 @@ public class VacancyController {
         //Сохранение файла
         String fileName = file.getOriginalFilename();
         try {
-            file.transferTo(new File("D:\\upload\\" + fileName));
+            file.transferTo(new File("D:\\Универ\\Курсовая работа\\softcompony\\src\\main\\resources\\static\\resumes\\" + fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
