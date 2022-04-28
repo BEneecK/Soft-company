@@ -21,6 +21,7 @@ public class AdminController {
     private static final String DEVELOPING = "Разработка";
     private static final String TESTING = "Тестирование";
     private static final String REALISATION = "Реализация";
+    private static final String DONE = "Завершено";
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -31,6 +32,10 @@ public class AdminController {
     private TaskRepository taskRepository;
     @Autowired
     private StageRepository stageRepository;
+    @Autowired
+    private VacancyResponseRepository vacancyResponseRepository;
+    @Autowired
+    private VacancyRepository vacancyRepository;
 
     @GetMapping("/admin/development")
     public String homePage(Model model) {
@@ -169,4 +174,54 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    @GetMapping("/admin/responses")
+    public String responsesPage(Model model) {
+        Iterable<Vacancy> vacancies = vacancyRepository.findAll();
+        model.addAttribute("responses", SortService.sortByResponseVacancy(vacancies));
+        return "adminResponses";
+    }
+
+    @GetMapping("/admin/response/{id}")
+    public String responsePage(@PathVariable(value = "id") long responseId, Model model) {
+
+        VacancyResponse vacancyResponse = vacancyResponseRepository.findById(responseId).orElseThrow();
+        model.addAttribute("vacancy", vacancyResponse.getVacancy().getName());
+        model.addAttribute("level", vacancyResponse.getVacancy().getLevel());
+        model.addAttribute("category", vacancyResponse.getVacancy().getCategory());
+        model.addAttribute("lastName", vacancyResponse.getLastName());
+        model.addAttribute("firstName", vacancyResponse.getFirstName());
+        model.addAttribute("email", vacancyResponse.getEmail());
+        model.addAttribute("docName", vacancyResponse.getCVDocName());
+
+        return "adminResponse";
+    }
+
+    @PostMapping("/admin/response/{id}")
+    public String acceptResponse(@PathVariable(value = "id") long responseId, Model model) {
+
+        VacancyResponse vacancyResponse = vacancyResponseRepository.findById(responseId).orElseThrow();
+
+        Vacancy vacancy = vacancyRepository.findByVacancyResponse(vacancyResponse);
+
+        vacancy.setVacancyResponse(null);
+        vacancyResponseRepository.delete(vacancyResponse);
+
+        //TODO ОТПРАВКА ПРИНЯТИЯ НА ПОЧТУ
+
+        return "redirect:/admin/responses";
+    }
+
+    @PostMapping("/admin/delete-response/{id}")
+    public String removeResponse(@PathVariable(value = "id") long responseId, Model model) {
+
+        VacancyResponse vacancyResponse = vacancyResponseRepository.findById(responseId).orElseThrow();
+        Vacancy vacancy = vacancyRepository.findByVacancyResponse(vacancyResponse);
+
+        vacancy.setVacancyResponse(null);
+        vacancyResponseRepository.delete(vacancyResponse);
+
+        //TODO ОТПРАВКА ОТКЛОНЕНИЯ НА ПОЧТУ
+
+        return "redirect:/admin/responses";
+    }
 }

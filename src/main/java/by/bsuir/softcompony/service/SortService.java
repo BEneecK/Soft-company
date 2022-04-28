@@ -2,6 +2,7 @@ package by.bsuir.softcompony.service;
 
 import by.bsuir.softcompony.entity.Client;
 import by.bsuir.softcompony.entity.Task;
+import by.bsuir.softcompony.entity.Vacancy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,5 +31,17 @@ public class SortService {
             }
         }
         return finishTasks;
+    }
+
+    public static Iterable<Vacancy> sortByResponseVacancy(Iterable<Vacancy> sentVacancies) {
+        List<Vacancy> vacancies = Converter.iterableToList(sentVacancies);
+        List<Vacancy> finishVacancies = new ArrayList<>();
+
+        for(int i = 0; i < vacancies.size(); i++) {
+            if(vacancies.get(i).getVacancyResponse() != null) {
+                finishVacancies.add(vacancies.get(i));
+            }
+        }
+        return finishVacancies;
     }
 }
