@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Заявки</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
 </head>
-<body>
 
+<body>
+<div class="container py-3">
+
+    <div th:insert="blocks/headerAdmin :: header"></div>
+
+    <main>
+        <div class="container mt-5">
+            <h1>Заявки</h1>
+            <div th:each="el:${orders}" class="alert alert-info mt-2">
+                <h3 th:text="${el.getClient().companyName}"/>
+                <p th:text="'Описание: ' + ${el.description}"/>
+                <p><a target="_blank" th:href="'tasks/' + ${el.taskDocName}">Техническое задание</a></p>
+                <a th:href="'/admin/order/' + ${el.id}" class="btn btn-primary">Утвердить</a>
+                <form th:action="'/admin/delete-order/' + ${el.id}" method="post">
+                    <br><button class="btn btn-primary" type="submit">Отклонить</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <div th:insert="blocks/footerClient :: footer"></div>
+</div>
 </body>
 </html>

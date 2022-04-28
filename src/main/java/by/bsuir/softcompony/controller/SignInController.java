@@ -31,7 +31,7 @@ public class SignInController {
             user = userRepository.findByEmail(email);
             if(user.getEmail().equals(email) && user.getPassword().equals(password)) {
                 if(user.getUserPosition().getPosition().equals(ADMIN)) {
-                    return "redirect:/admin/";
+                    return "redirect:/admin";
                 }
                 else if(user.getUserPosition().getPosition().equals(DEVELOPER)) {
                     return "redirect:/developer/" + user.getId();

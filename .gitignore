@@ -1,5 +1,6 @@
 HELP.md
 /target/
+/src/main/resources/static/
 /db/
 .idea
 *.iws
