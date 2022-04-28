@@ -1,10 +1,9 @@
 package by.bsuir.softcompony.controller;
 
-import by.bsuir.softcompony.entity.Client;
-import by.bsuir.softcompony.entity.Task;
-import by.bsuir.softcompony.entity.User;
+import by.bsuir.softcompony.entity.*;
 import by.bsuir.softcompony.entity.repository.ClientRepository;
 import by.bsuir.softcompony.entity.repository.TaskRepository;
+import by.bsuir.softcompony.entity.repository.UserPositionRepository;
 import by.bsuir.softcompony.entity.repository.UserRepository;
 import by.bsuir.softcompony.service.SortService;
 import net.bytebuddy.TypeCache;
@@ -12,6 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
 
 @Controller
 public class AdminController {
@@ -21,6 +29,8 @@ public class AdminController {
     private static final String REALISATION = "Реализация";
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserPositionRepository userPositionRepository;
     @Autowired
     private ClientRepository clientRepository;
     @Autowired
@@ -58,5 +68,34 @@ public class AdminController {
         Iterable<Client> clients = clientRepository.findAll();
         model.addAttribute("clients", clients);
         return "adminUsers";
+    }
+
+    @GetMapping("/admin/edit-user/{id}")
+    public String usersUpdatePage(@PathVariable(value = "id") long userId, Model model) {
+        Optional<User> user = userRepository.findById(userId);
+        ArrayList<User> users = new ArrayList<>();
+        user.ifPresent(users::add);
+        model.addAttribute("user", users);
+        return "adminUserEdit";
+    }
+
+    @PostMapping("/admin/edit-user/{id}")
+    public String makeOrder(@PathVariable(value = "id") long userId, @RequestParam String firstName,
+                            @RequestParam String lastName, @RequestParam String email,
+                            @RequestParam String password,  @RequestParam String position, Model model) {
+
+        //Поиск должности
+        UserPosition userPosition = userPositionRepository.findByPosition(position);
+
+        //Внос изменённых данных
+        User user = userRepository.findById(userId).orElseThrow();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setUserPosition(userPosition);
+        userRepository.save(user);
+
+        return "redirect:/admin/users/";
     }
 }
