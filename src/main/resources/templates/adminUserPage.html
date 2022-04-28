@@ -25,7 +25,10 @@
                             <h4 th:text="${el.lastName} + ' ' + ${el.firstName}"/>
                             <p th:text="'Должность: ' + ${el.userPosition.position}"/>
                             <a th:href="'/admin/edit-user/' + ${el.id}" class="btn btn-primary">Изменить</a>
-                            <a th:href="'/admin/delete-user/' + ${el.id}" class="btn btn-primary">Удалить</a>
+                            <form th:action="'/admin/delete-user/' + ${el.id}" method="post">
+                                <br><button class="btn btn-primary" type="submit">Удалить</button>
+                            </form>
+
                             <hr class="my-4">
                         </div>
                     </div>
@@ -41,8 +44,6 @@
                             <h4 th:text="${el.companyName}"/>
                             <p th:text="'Почта: ' + ${el.email}"/>
                             <p th:text="'Контактный номер: ' + ${el.phoneNumber}"/>
-                            <a th:href="'/admin/edit-client/' + ${el.id}" class="btn btn-primary">Изменить</a>
-                            <a th:href="'/admin/delete-client/' + ${el.id}" class="btn btn-primary">Удалить</a>
                             <hr class="my-4">
                         </div>
                     </div>

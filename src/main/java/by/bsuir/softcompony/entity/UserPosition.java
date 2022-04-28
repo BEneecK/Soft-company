@@ -1,5 +1,8 @@
 package by.bsuir.softcompony.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +17,7 @@ public class UserPosition {
     private Long id;
     @Column(name = "position")
     private String position;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "position_id")
+    @OneToMany(mappedBy = "userPosition", cascade = CascadeType.ALL)
     private List<User> users = new ArrayList<>();
 
     public UserPosition() {

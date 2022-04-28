@@ -1,5 +1,8 @@
 package by.bsuir.softcompony.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,14 +33,12 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, String email, String password, UserPosition userPosition, List<Task> tasks) {
-        this.id = id;
+    public User(String firstName, String lastName, String email, String password, UserPosition userPosition) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.userPosition = userPosition;
-        this.tasks = tasks;
     }
 
     public Long getId() {

@@ -6,7 +6,6 @@ import by.bsuir.softcompony.entity.repository.TaskRepository;
 import by.bsuir.softcompony.entity.repository.UserPositionRepository;
 import by.bsuir.softcompony.entity.repository.UserRepository;
 import by.bsuir.softcompony.service.SortService;
-import net.bytebuddy.TypeCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -67,7 +63,7 @@ public class AdminController {
 
         Iterable<Client> clients = clientRepository.findAll();
         model.addAttribute("clients", clients);
-        return "adminUsers";
+        return "adminUserPage";
     }
 
     @GetMapping("/admin/edit-user/{id}")
@@ -80,7 +76,7 @@ public class AdminController {
     }
 
     @PostMapping("/admin/edit-user/{id}")
-    public String makeOrder(@PathVariable(value = "id") long userId, @RequestParam String firstName,
+    public String updateUser(@PathVariable(value = "id") long userId, @RequestParam String firstName,
                             @RequestParam String lastName, @RequestParam String email,
                             @RequestParam String password,  @RequestParam String position, Model model) {
 
@@ -94,6 +90,36 @@ public class AdminController {
         user.setEmail(email);
         user.setPassword(password);
         user.setUserPosition(userPosition);
+        userRepository.save(user);
+
+        return "redirect:/admin/users/";
+    }
+
+    @PostMapping("/admin/delete-user/{id}")
+    public String removeUser(@PathVariable(value = "id") long userId, Model model) {
+
+        User user = userRepository.findById(userId).orElseThrow();
+        userRepository.delete(user);
+
+        return "redirect:/admin/users/";
+    }
+
+    @GetMapping("/admin/add-user")
+    public String addUserPage(Model model) {
+
+        return "adminUserAdd";
+    }
+
+    @PostMapping("/admin/add-user")
+    public String addUser(@RequestParam String firstName,
+                             @RequestParam String lastName, @RequestParam String email,
+                             @RequestParam String password,  @RequestParam String position, Model model) {
+
+        //Поиск должности
+        UserPosition userPosition = userPositionRepository.findByPosition(position);
+
+        //Внос изменённых данных
+        User user = new User(firstName, lastName, email, password, userPosition);
         userRepository.save(user);
 
         return "redirect:/admin/users/";
