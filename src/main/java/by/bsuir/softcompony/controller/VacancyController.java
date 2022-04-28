@@ -24,6 +24,8 @@ import java.util.Optional;
 public class VacancyController {
 
     private static final String MESSAGE = "Отклик отправлен";
+    private static final String FOLDER_PATH = "D:\\Универ\\Курсовая работа\\softcompony\\src\\main\\resources\\static\\resumes\\";
+
     @Autowired
     private VacancyRepository vacancyRepository;
     @Autowired
@@ -52,7 +54,7 @@ public class VacancyController {
         //Сохранение файла
         String fileName = file.getOriginalFilename();
         try {
-            file.transferTo(new File("D:\\Универ\\Курсовая работа\\softcompony\\src\\main\\resources\\static\\resumes\\" + fileName));
+            file.transferTo(new File(FOLDER_PATH + fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -34,7 +34,7 @@ public class SignInController {
                     return "redirect:/admin";
                 }
                 else if(user.getUserPosition().getPosition().equals(DEVELOPER)) {
-                    return "redirect:/developer/" + user.getId();
+                    return "redirect:/dev/" + user.getId();
                 }
                 else {
                     return "redirect:/tester/" + user.getId();

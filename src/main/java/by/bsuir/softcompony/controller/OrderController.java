@@ -23,6 +23,7 @@ public class OrderController {
 
 
     private static final String MESSAGE = "Заявка отправлена";
+    private static final String FOLDER_PATH = "D:\\Универ\\Курсовая работа\\softcompony\\src\\main\\resources\\static\\tasks\\";
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
@@ -43,7 +44,7 @@ public class OrderController {
         client.setEmail(email);
         String fileName = file.getOriginalFilename();
         try {
-            file.transferTo(new File("D:\\Универ\\Курсовая работа\\softcompony\\src\\main\\resources\\static\\tasks\\" + fileName));
+            file.transferTo(new File(FOLDER_PATH + fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
