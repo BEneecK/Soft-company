@@ -54,6 +54,9 @@
                             <div th:each="el : ${tasksReal}">
                                 <h4 th:text="${el.getClient().companyName}"/>
                                 <p th:text="'Описание: ' + ${el.description}"/>
+                                <form th:action="'/admin/development/accept/' + ${el.id}" method="post">
+                                    <br><button class="btn btn-primary" type="submit">Утвердить</button>
+                                </form>
                                 <hr class="my-4">
                             </div>
                         </div>

@@ -61,6 +61,21 @@ public class AdminController {
         return "adminDevelopmentPage";
     }
 
+    @PostMapping("/admin/development/accept/{id}")
+    public String realisationTask(@PathVariable(value = "id") long taskId, Model model) {
+
+        Task task = taskRepository.findById(taskId).orElseThrow();
+
+        Stage stage = stageRepository.findByStage(DONE);
+
+        task.setStage(stage);
+        taskRepository.save(task);
+
+        //TODO Отправка сообщения на почту о завершении проекта
+
+        return "redirect:/admin/development";
+    }
+
     @GetMapping("/admin/users")
     public String usersPage(Model model) {
         Iterable<User> users = userRepository.findAll();

@@ -37,7 +37,7 @@ public class SignInController {
                     return "redirect:/dev/" + user.getId();
                 }
                 else {
-                    return "redirect:/tester/" + user.getId();
+                    return "redirect:/tester";
                 }
             }
             else {
