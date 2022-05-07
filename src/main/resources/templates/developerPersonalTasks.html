@@ -17,7 +17,7 @@
             <div th:each="el:${tasks}" class="alert alert-info mt-2">
                 <h3 th:text="'Описание: ' + ${el.getDescription()}"/>
                 <p><a target="_blank" th:href="'/tasks/' + ${el.taskDocName}">Техническое задание</a></p>
-                <a th:href="'/dev/' + ${id} + '/tasks/' + ${el.id} + '/send-solution'" class="btn btn-primary">Утвердить</a>
+                <a th:href="'/dev/' + ${id} + '/tasks/' + ${el.id} + '/send-solution'" class="btn btn-primary">Выслать решение</a>
             </div>
         </div>
     </main>

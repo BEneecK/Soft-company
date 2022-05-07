@@ -1,12 +1,11 @@
 package by.bsuir.softcompony.controller;
 
+import by.bsuir.softcompony.controller.consts.PathConsts;
 import by.bsuir.softcompony.entity.Client;
 import by.bsuir.softcompony.entity.Stage;
 import by.bsuir.softcompony.entity.Task;
-import by.bsuir.softcompony.entity.User;
 import by.bsuir.softcompony.entity.repository.StageRepository;
 import by.bsuir.softcompony.entity.repository.TaskRepository;
-import by.bsuir.softcompony.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +22,7 @@ public class OrderController {
 
 
     private static final String MESSAGE = "Заявка отправлена";
-    private static final String FOLDER_PATH = "D:\\Универ\\Курсовая работа\\softcompony\\src\\main\\resources\\static\\tasks\\";
+
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
@@ -44,7 +43,7 @@ public class OrderController {
         client.setEmail(email);
         String fileName = file.getOriginalFilename();
         try {
-            file.transferTo(new File(FOLDER_PATH + fileName));
+            file.transferTo(new File(PathConsts.FOLDER_PATH_TASKS + fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }

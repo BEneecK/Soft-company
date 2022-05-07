@@ -1,5 +1,6 @@
 package by.bsuir.softcompony.controller;
 
+import by.bsuir.softcompony.controller.consts.RoleConsts;
 import by.bsuir.softcompony.entity.User;
 import by.bsuir.softcompony.entity.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SignInController {
 
     private static final String ERROR_MESSAGE = "Неверный логин или пароль";
-    private static final String ADMIN = "Администратор";
-    private static final String DEVELOPER = "Разработчик";
-    private static final String TESTER = "Тестировщик";
+
     @Autowired
     private UserRepository userRepository;
 
@@ -30,13 +29,13 @@ public class SignInController {
         if(userRepository.existsByEmail(email)) {
             user = userRepository.findByEmail(email);
             if(user.getEmail().equals(email) && user.getPassword().equals(password)) {
-                if(user.getUserPosition().getPosition().equals(ADMIN)) {
+                if(user.getUserPosition().getPosition().equals(RoleConsts.ADMIN)) {
                     return "redirect:/admin";
                 }
-                else if(user.getUserPosition().getPosition().equals(DEVELOPER)) {
+                else if(user.getUserPosition().getPosition().equals(RoleConsts.DEVELOPER)) {
                     return "redirect:/dev/" + user.getId();
                 }
-                else {
+                else if(user.getUserPosition().getPosition().equals(RoleConsts.TESTER)){
                     return "redirect:/tester";
                 }
             }

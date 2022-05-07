@@ -1,12 +1,12 @@
 package by.bsuir.softcompony.controller;
 
+import by.bsuir.softcompony.controller.consts.PathConsts;
 import by.bsuir.softcompony.entity.Stage;
 import by.bsuir.softcompony.entity.Vacancy;
 import by.bsuir.softcompony.entity.VacancyResponse;
 import by.bsuir.softcompony.entity.repository.StageRepository;
 import by.bsuir.softcompony.entity.repository.VacancyRepository;
 import by.bsuir.softcompony.entity.repository.VacancyResponseRepository;
-import net.bytebuddy.dynamic.DynamicType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +24,6 @@ import java.util.Optional;
 public class VacancyController {
 
     private static final String MESSAGE = "Отклик отправлен";
-    private static final String FOLDER_PATH = "D:\\Универ\\Курсовая работа\\softcompony\\src\\main\\resources\\static\\resumes\\";
 
     @Autowired
     private VacancyRepository vacancyRepository;
@@ -41,7 +40,7 @@ public class VacancyController {
     }
 
     @GetMapping("/vacancies/{id}")
-    public String responseForm(/*@PathVariable(value = "id") long VacancyId, */Model model) {
+    public String responseForm(Model model) {
 
         return "response";
     }
@@ -54,7 +53,7 @@ public class VacancyController {
         //Сохранение файла
         String fileName = file.getOriginalFilename();
         try {
-            file.transferTo(new File(FOLDER_PATH + fileName));
+            file.transferTo(new File(PathConsts.FOLDER_PATH_RESUMES + fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }

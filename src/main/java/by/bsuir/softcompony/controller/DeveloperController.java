@@ -1,6 +1,7 @@
 package by.bsuir.softcompony.controller;
 
-import by.bsuir.softcompony.entity.Client;
+import by.bsuir.softcompony.controller.consts.PathConsts;
+import by.bsuir.softcompony.controller.consts.StageConsts;
 import by.bsuir.softcompony.entity.Stage;
 import by.bsuir.softcompony.entity.Task;
 import by.bsuir.softcompony.entity.User;
@@ -24,13 +25,6 @@ import java.io.IOException;
 public class DeveloperController {
 
     private static final String MESSAGE = "Решение отправлено";
-    private static final String FOLDER_PATH = "D:\\Универ\\Курсовая работа\\softcompony\\src\\main\\resources\\static\\solutions\\";
-
-    private static final String CONSIDERATION = "Рассмотрение";
-    private static final String DEVELOPING = "Разработка";
-    private static final String TESTING = "Тестирование";
-    private static final String REALISATION = "Реализация";
-    private static final String DONE = "Завершено";
 
     @Autowired
     private UserRepository userRepository;
@@ -48,14 +42,15 @@ public class DeveloperController {
 
         //Вывод задач в разработке
         Iterable<Task> tasks = taskRepository.findAll();
-        tasks = SortService.sortByStageTask(tasks, DEVELOPING);
+        tasks = SortService.sortByStageTask(tasks, StageConsts.DEVELOPING);
         model.addAttribute("tasks", SortService.sortByTakenTask(tasks));
 
         return "developerPage";
     }
 
     @PostMapping("/dev/{dev_id}/accept-task/{task_id}")
-    public String acceptTask(@PathVariable(value = "dev_id") long devId, @PathVariable(value = "task_id") long taskId, Model model) {
+    public String acceptTask(@PathVariable(value = "dev_id") long devId,
+                             @PathVariable(value = "task_id") long taskId, Model model) {
 
         Task task = taskRepository.findById(taskId).orElseThrow();
         User user = userRepository.findById(devId).orElseThrow();
@@ -76,14 +71,15 @@ public class DeveloperController {
 
         //Вывод задач в разработке
         Iterable<Task> tasks = taskRepository.findAll();
-        tasks = SortService.sortByStageTask(tasks, DEVELOPING);
+        tasks = SortService.sortByStageTask(tasks, StageConsts.DEVELOPING);
         model.addAttribute("tasks", SortService.sortByPersonalTask(tasks, userId));
 
         return "developerPersonalTasks";
     }
 
     @GetMapping("/dev/{dev_id}/tasks/{task_id}/send-solution")
-    public String sendSolution(@PathVariable(value = "dev_id") long userId, @PathVariable(value = "task_id") long taskId, Model model) {
+    public String sendSolution(@PathVariable(value = "dev_id") long userId,
+                               @PathVariable(value = "task_id") long taskId, Model model) {
 
         return "developerSendSolution";
     }
@@ -97,12 +93,12 @@ public class DeveloperController {
 
         String fileName = file.getOriginalFilename();
         try {
-            file.transferTo(new File(FOLDER_PATH + fileName));
+            file.transferTo(new File(PathConsts.FOLDER_PATH_SOLUTIONS + fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Stage stage = stageRepository.findByStage(TESTING);
+        Stage stage = stageRepository.findByStage(StageConsts.TESTING);
         task.setStage(stage);
 
         taskRepository.save(task);

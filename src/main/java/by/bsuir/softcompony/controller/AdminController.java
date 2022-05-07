@@ -1,5 +1,6 @@
 package by.bsuir.softcompony.controller;
 
+import by.bsuir.softcompony.controller.consts.StageConsts;
 import by.bsuir.softcompony.entity.*;
 import by.bsuir.softcompony.entity.repository.*;
 import by.bsuir.softcompony.service.SortService;
@@ -11,17 +12,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Properties;
 
 @Controller
 public class AdminController {
 
-    private static final String CONSIDERATION = "Рассмотрение";
-    private static final String DEVELOPING = "Разработка";
-    private static final String TESTING = "Тестирование";
-    private static final String REALISATION = "Реализация";
-    private static final String DONE = "Завершено";
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -41,22 +42,22 @@ public class AdminController {
     public String homePage(Model model) {
 
         Iterable<Client> clientsDev = clientRepository.findAll();
-        model.addAttribute("clientsDev", SortService.sortByStageClient(clientsDev, DEVELOPING));
+        model.addAttribute("clientsDev", SortService.sortByStageClient(clientsDev, StageConsts.DEVELOPING));
 
         Iterable<Client> clientsTest = clientRepository.findAll();
-        model.addAttribute("clientsTest", SortService.sortByStageClient(clientsTest, TESTING));
+        model.addAttribute("clientsTest", SortService.sortByStageClient(clientsTest, StageConsts.TESTING));
 
         Iterable<Client> clientsReal = clientRepository.findAll();
-        model.addAttribute("clientsReal", SortService.sortByStageClient(clientsReal, REALISATION));
+        model.addAttribute("clientsReal", SortService.sortByStageClient(clientsReal, StageConsts.REALISATION));
 
         Iterable<Task> taskDev = taskRepository.findAll();
-        model.addAttribute("tasksDev", SortService.sortByStageTask(taskDev, DEVELOPING));
+        model.addAttribute("tasksDev", SortService.sortByStageTask(taskDev, StageConsts.DEVELOPING));
 
         Iterable<Task> taskTest = taskRepository.findAll();
-        model.addAttribute("tasksTest", SortService.sortByStageTask(taskDev, TESTING));
+        model.addAttribute("tasksTest", SortService.sortByStageTask(taskDev, StageConsts.TESTING));
 
         Iterable<Task> taskReal = taskRepository.findAll();
-        model.addAttribute("tasksReal", SortService.sortByStageTask(taskDev, REALISATION));
+        model.addAttribute("tasksReal", SortService.sortByStageTask(taskDev, StageConsts.REALISATION));
 
         return "adminDevelopmentPage";
     }
@@ -66,7 +67,7 @@ public class AdminController {
 
         Task task = taskRepository.findById(taskId).orElseThrow();
 
-        Stage stage = stageRepository.findByStage(DONE);
+        Stage stage = stageRepository.findByStage(StageConsts.DONE);
 
         task.setStage(stage);
         taskRepository.save(task);
@@ -148,7 +149,7 @@ public class AdminController {
     @GetMapping("/admin")
     public String ordersPage(Model model) {
         Iterable<Task> tasks = taskRepository.findAll();
-        model.addAttribute("orders", SortService.sortByStageTask(tasks, CONSIDERATION));
+        model.addAttribute("orders", SortService.sortByStageTask(tasks, StageConsts.CONSIDERATION));
         return "adminOrders";
     }
 
@@ -169,7 +170,7 @@ public class AdminController {
 
         Task task = taskRepository.findById(taskId).orElseThrow();
 
-        Stage stage = stageRepository.findByStage(DEVELOPING);
+        Stage stage = stageRepository.findByStage(StageConsts.DEVELOPING);
         task.setStage(stage);
         taskRepository.save(task);
 
@@ -214,6 +215,8 @@ public class AdminController {
     @PostMapping("/admin/response/{id}")
     public String acceptResponse(@PathVariable(value = "id") long responseId, Model model) {
 
+
+
         VacancyResponse vacancyResponse = vacancyResponseRepository.findById(responseId).orElseThrow();
 
         Vacancy vacancy = vacancyRepository.findByVacancyResponse(vacancyResponse);
@@ -221,7 +224,8 @@ public class AdminController {
         vacancy.setVacancyResponse(null);
         vacancyResponseRepository.delete(vacancyResponse);
 
-        //TODO ОТПРАВКА ПРИНЯТИЯ НА ПОЧТУ
+
+        //TODO ОТПРАВКА ОТКЛОНЕНИЯ НА ПОЧТУ
 
         return "redirect:/admin/responses";
     }

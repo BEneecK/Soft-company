@@ -1,5 +1,6 @@
 package by.bsuir.softcompony.controller;
 
+import by.bsuir.softcompony.controller.consts.StageConsts;
 import by.bsuir.softcompony.entity.Stage;
 import by.bsuir.softcompony.entity.Task;
 import by.bsuir.softcompony.entity.User;
@@ -22,14 +23,6 @@ import java.util.Optional;
 @Controller
 public class TesterController {
 
-    private static final String MESSAGE = "Решение отправлено";
-    private static final String FOLDER_PATH = "D:\\Универ\\Курсовая работа\\softcompony\\src\\main\\resources\\static\\solutions\\";
-
-    private static final String CONSIDERATION = "Рассмотрение";
-    private static final String DEVELOPING = "Разработка";
-    private static final String TESTING = "Тестирование";
-    private static final String REALISATION = "Реализация";
-    private static final String DONE = "Завершено";
 
     @Autowired
     private UserRepository userRepository;
@@ -43,7 +36,7 @@ public class TesterController {
 
         //Вывод задач в разработке
         Iterable<Task> tasks = taskRepository.findAll();
-        tasks = SortService.sortByStageTask(tasks, TESTING);
+        tasks = SortService.sortByStageTask(tasks, StageConsts.TESTING);
         model.addAttribute("tasks", tasks);
 
         return "testerPage";
@@ -60,7 +53,7 @@ public class TesterController {
 
         Task task = taskRepository.findById(taskId).orElseThrow();
 
-        Stage stage = stageRepository.findByStage(REALISATION);
+        Stage stage = stageRepository.findByStage(StageConsts.REALISATION);
 
         task.setStage(stage);
         taskRepository.save(task);
@@ -73,7 +66,7 @@ public class TesterController {
 
         Task task = taskRepository.findById(taskId).orElseThrow();
 
-        Stage stage = stageRepository.findByStage(DEVELOPING);
+        Stage stage = stageRepository.findByStage(StageConsts.DEVELOPING);
 
         task.setStage(stage);
         task.setSolutionDocName(null);
