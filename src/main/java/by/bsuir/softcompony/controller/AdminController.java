@@ -12,13 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.security.Security;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Properties;
 
 @Controller
 public class AdminController {

@@ -50,8 +50,10 @@ public class SortService {
         List<Task> finishTasks = new ArrayList<>();
 
         for(int i = 0; i < tasks.size(); i++) {
-            if(tasks.get(i).getUser().getId() == id) {
-                finishTasks.add(tasks.get(i));
+            if (tasks.get(i).getUser() != null) {
+                if (tasks.get(i).getUser().getId() == id) {
+                    finishTasks.add(tasks.get(i));
+                }
             }
         }
         return finishTasks;
