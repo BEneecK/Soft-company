@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 
 @Controller
+@RequestMapping("/order")
 public class OrderController {
 
 
@@ -28,12 +30,12 @@ public class OrderController {
     @Autowired
     private StageRepository stageRepository;
 
-    @GetMapping("/order")
+    @GetMapping
     public String orderForm(Model model) {
         return "order";
     }
 
-    @PostMapping("/order")
+    @PostMapping
     public String makeOrder(@RequestParam String company, @RequestParam String phoneNumber, @RequestParam String email,
                             @RequestParam String description, @RequestParam("file")MultipartFile file, Model model) {
 

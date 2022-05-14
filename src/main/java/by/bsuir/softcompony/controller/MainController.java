@@ -9,7 +9,7 @@ import java.io.File;
 @Controller
 public class MainController {
 
-    @GetMapping("/")
+    @GetMapping
     public String homePage(Model model) {
 
         return "homePage";

@@ -7,15 +7,13 @@ import by.bsuir.softcompony.service.SortService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 
     @Autowired
@@ -33,7 +31,7 @@ public class AdminController {
     @Autowired
     private VacancyRepository vacancyRepository;
 
-    @GetMapping("/admin/development")
+    @GetMapping("development")
     public String homePage(Model model) {
 
         Iterable<Client> clientsDev = clientRepository.findAll();
@@ -57,7 +55,7 @@ public class AdminController {
         return "adminDevelopmentPage";
     }
 
-    @PostMapping("/admin/development/accept/{id}")
+    @PostMapping("development/accept/{id}")
     public String realisationTask(@PathVariable(value = "id") long taskId, Model model) {
 
         Task task = taskRepository.findById(taskId).orElseThrow();
@@ -72,7 +70,7 @@ public class AdminController {
         return "redirect:/admin/development";
     }
 
-    @GetMapping("/admin/users")
+    @GetMapping("users")
     public String usersPage(Model model) {
         Iterable<User> users = userRepository.findAll();
         model.addAttribute("users", users);
@@ -82,7 +80,7 @@ public class AdminController {
         return "adminUserPage";
     }
 
-    @GetMapping("/admin/edit-user/{id}")
+    @GetMapping("edit-user/{id}")
     public String usersUpdatePage(@PathVariable(value = "id") long userId, Model model) {
         Optional<User> user = userRepository.findById(userId);
         ArrayList<User> users = new ArrayList<>();
@@ -91,7 +89,7 @@ public class AdminController {
         return "adminUserEdit";
     }
 
-    @PostMapping("/admin/edit-user/{id}")
+    @PostMapping("edit-user/{id}")
     public String updateUser(@PathVariable(value = "id") long userId, @RequestParam String firstName,
                             @RequestParam String lastName, @RequestParam String email,
                             @RequestParam String password,  @RequestParam String position, Model model) {
@@ -111,7 +109,7 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    @PostMapping("/admin/delete-user/{id}")
+    @PostMapping("delete-user/{id}")
     public String removeUser(@PathVariable(value = "id") long userId, Model model) {
 
         User user = userRepository.findById(userId).orElseThrow();
@@ -120,13 +118,13 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    @GetMapping("/admin/add-user")
+    @GetMapping("add-user")
     public String addUserPage(Model model) {
 
         return "adminUserAdd";
     }
 
-    @PostMapping("/admin/add-user")
+    @PostMapping("add-user")
     public String addUser(@RequestParam String firstName,
                              @RequestParam String lastName, @RequestParam String email,
                              @RequestParam String password,  @RequestParam String position, Model model) {
@@ -141,14 +139,14 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    @GetMapping("/admin")
+    @GetMapping
     public String ordersPage(Model model) {
         Iterable<Task> tasks = taskRepository.findAll();
         model.addAttribute("orders", SortService.sortByStageTask(tasks, StageConsts.CONSIDERATION));
         return "adminOrders";
     }
 
-    @GetMapping("/admin/order/{id}")
+    @GetMapping("order/{id}")
     public String orderPage(@PathVariable(value = "id") long taskId, Model model) {
 
         Task task = taskRepository.findById(taskId).orElseThrow();
@@ -160,7 +158,7 @@ public class AdminController {
         return "adminOrder";
     }
 
-    @PostMapping("/admin/order/{id}")
+    @PostMapping("order/{id}")
     public String acceptOrder(@PathVariable(value = "id") long taskId, Model model) {
 
         Task task = taskRepository.findById(taskId).orElseThrow();
@@ -174,7 +172,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @PostMapping("/admin/delete-order/{id}")
+    @PostMapping("delete-order/{id}")
     public String removeOrder(@PathVariable(value = "id") long taskId, Model model) {
 
         Task task = taskRepository.findById(taskId).orElseThrow();
@@ -185,14 +183,14 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/responses")
+    @GetMapping("responses")
     public String responsesPage(Model model) {
         Iterable<Vacancy> vacancies = vacancyRepository.findAll();
         model.addAttribute("responses", SortService.sortByResponseVacancy(vacancies));
         return "adminResponses";
     }
 
-    @GetMapping("/admin/response/{id}")
+    @GetMapping("response/{id}")
     public String responsePage(@PathVariable(value = "id") long responseId, Model model) {
 
         VacancyResponse vacancyResponse = vacancyResponseRepository.findById(responseId).orElseThrow();
@@ -207,7 +205,7 @@ public class AdminController {
         return "adminResponse";
     }
 
-    @PostMapping("/admin/response/{id}")
+    @PostMapping("response/{id}")
     public String acceptResponse(@PathVariable(value = "id") long responseId, Model model) {
 
 
@@ -225,7 +223,7 @@ public class AdminController {
         return "redirect:/admin/responses";
     }
 
-    @PostMapping("/admin/delete-response/{id}")
+    @PostMapping("delete-response/{id}")
     public String removeResponse(@PathVariable(value = "id") long responseId, Model model) {
 
         VacancyResponse vacancyResponse = vacancyResponseRepository.findById(responseId).orElseThrow();

@@ -12,15 +12,13 @@ import by.bsuir.softcompony.service.SortService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/tester")
 public class TesterController {
 
 
@@ -31,7 +29,7 @@ public class TesterController {
     @Autowired
     private StageRepository stageRepository;
 
-    @GetMapping("/tester")
+    @GetMapping
     public String homePage(Model model) {
 
         //Вывод задач в разработке
@@ -42,13 +40,13 @@ public class TesterController {
         return "testerPage";
     }
 
-    @GetMapping("/tester/accept-task/{id}")
+    @GetMapping("accept-task/{id}")
     public String acceptTaskPage(@PathVariable(value = "id") long taskId, Model model) {
 
         return "testerAcceptTask";
     }
 
-    @PostMapping("/tester/accept-task/{id}")
+    @PostMapping("accept-task/{id}")
     public String acceptTask(@PathVariable(value = "id") long taskId, Model model) {
 
         Task task = taskRepository.findById(taskId).orElseThrow();
@@ -61,7 +59,7 @@ public class TesterController {
         return "redirect:/tester";
     }
 
-    @PostMapping("/tester/reject-task/{id}")
+    @PostMapping("reject-task/{id}")
     public String rejectTask(@PathVariable(value = "id") long taskId, Model model) {
 
         Task task = taskRepository.findById(taskId).orElseThrow();

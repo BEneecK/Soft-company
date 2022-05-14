@@ -8,9 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequestMapping("/sign-in")
 public class SignInController {
 
     private static final String ERROR_MESSAGE = "Неверный логин или пароль";
@@ -18,12 +20,12 @@ public class SignInController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/sign-in")
+    @GetMapping
     public String signInForm(Model model) {
         return "signIn";
     }
 
-    @PostMapping("/sign-in")
+    @PostMapping
     public String signIn(@RequestParam String email, @RequestParam String password, Model model) {
         User user = new User();
         if(userRepository.existsByEmail(email)) {

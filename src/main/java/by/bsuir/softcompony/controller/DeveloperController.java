@@ -12,16 +12,14 @@ import by.bsuir.softcompony.service.SortService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 
 @Controller
+@RequestMapping("/dev")
 public class DeveloperController {
 
     private static final String MESSAGE = "Решение отправлено";
@@ -33,7 +31,7 @@ public class DeveloperController {
     @Autowired
     private StageRepository stageRepository;
 
-    @GetMapping("/dev/{id}")
+    @GetMapping("{id}")
     public String homePage(@PathVariable(value = "id") long userId, Model model) {
 
         //Передача айди пользователя
@@ -48,7 +46,7 @@ public class DeveloperController {
         return "developerPage";
     }
 
-    @PostMapping("/dev/{dev_id}/accept-task/{task_id}")
+    @PostMapping("{dev_id}/accept-task/{task_id}")
     public String acceptTask(@PathVariable(value = "dev_id") long devId,
                              @PathVariable(value = "task_id") long taskId, Model model) {
 
@@ -62,7 +60,7 @@ public class DeveloperController {
         return URL;
     }
 
-    @GetMapping("/dev/{id}/tasks")
+    @GetMapping("{id}/tasks")
     public String personalTasks(@PathVariable(value = "id") long userId, Model model) {
 
         //Передача айди пользователя
@@ -77,14 +75,14 @@ public class DeveloperController {
         return "developerPersonalTasks";
     }
 
-    @GetMapping("/dev/{dev_id}/tasks/{task_id}/send-solution")
+    @GetMapping("{dev_id}/tasks/{task_id}/send-solution")
     public String sendSolution(@PathVariable(value = "dev_id") long userId,
                                @PathVariable(value = "task_id") long taskId, Model model) {
 
         return "developerSendSolution";
     }
 
-    @PostMapping("/dev/{dev_id}/tasks/{task_id}/send-solution")
+    @PostMapping("{dev_id}/tasks/{task_id}/send-solution")
     public String sendSolution(@PathVariable(value = "dev_id") long devId, @PathVariable(value = "task_id") long taskId,
                                @RequestParam("file") MultipartFile file, Model model) {
 
